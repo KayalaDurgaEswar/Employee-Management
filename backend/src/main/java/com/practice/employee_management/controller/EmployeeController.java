@@ -4,6 +4,8 @@ package com.practice.employee_management.controller;
 import com.practice.employee_management.dto.EmployeeRequest;
 import com.practice.employee_management.dto.EmployeeResponse;
 import com.practice.employee_management.entity.Employee;
+import com.practice.employee_management.exception.ResourceNotFoundException;
+import com.practice.employee_management.repository.EmployeeRepository;
 import com.practice.employee_management.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,4 +42,13 @@ public class EmployeeController {
     ){
         return employeeService.updateEmployee(id,request);
     }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteEmployee(@PathVariable Long id) {
+
+        employeeService.deleteEmployee(id);
+
+    }
+
 }
