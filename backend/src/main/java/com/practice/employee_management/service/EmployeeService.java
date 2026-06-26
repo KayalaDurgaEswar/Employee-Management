@@ -8,4 +8,5 @@ public interface EmployeeService {
     EmployeeResponse createEmployee(EmployeeRequest request);
 
     EmployeeResponse getEmployeeById(Long id);
+    EmployeeResponse updateEmployee(Long id, EmployeeRequest request);
 }

@@ -35,5 +35,31 @@ public class EmployeeServiceImpl implements EmployeeService {
                                 "Employee not found with id : " + id));
 
         return EmployeeMapper.toResponse(employee);
+
+
+    }
+    @Override
+    public EmployeeResponse updateEmployee(Long id, EmployeeRequest request) {
+
+
+        Employee employee = employeeRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(" Employee not foudn with id :" + id));
+
+
+        employee.setEmployeeCode(request.getEmployeeCode());
+        employee.setFirstName(request.getFirstName());
+        employee.setLastName(request.getLastName());
+        employee.setEmail(request.getEmail());
+        employee.setDepartment(request.getDepartment());
+        employee.setDesignation(request.getDesignation());
+        employee.setDateOfJoining(request.getDateOfJoining());
+        employee.setSalary(request.getSalary());
+        employee.setStatus(request.getStatus());
+
+
+        Employee updated_employee = employeeRepository.save(employee);
+
+
+        return EmployeeMapper.toResponse(updated_employee);
+
     }
 }

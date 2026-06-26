@@ -32,4 +32,12 @@ public class EmployeeController {
 
         return employeeService.getEmployeeById(id);
     }
+
+    @PutMapping("/{id}")
+    public EmployeeResponse updateEmployee(
+            @PathVariable Long id,
+            @Valid @RequestBody EmployeeRequest request
+    ){
+        return employeeService.updateEmployee(id,request);
+    }
 }
