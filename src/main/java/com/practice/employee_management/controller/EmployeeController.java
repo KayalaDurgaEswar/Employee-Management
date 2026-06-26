@@ -1,8 +1,11 @@
 package com.practice.employee_management.controller;
 
 
+import com.practice.employee_management.dto.EmployeeRequest;
+import com.practice.employee_management.dto.EmployeeResponse;
 import com.practice.employee_management.entity.Employee;
 import com.practice.employee_management.service.EmployeeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,13 +19,16 @@ public class EmployeeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee createEmployee(@RequestBody Employee employee) {
+    public EmployeeResponse createEmployee(
+            @Valid
+            @RequestBody EmployeeRequest request){
 
-        return employeeService.createEmployee(employee);
+        return employeeService.createEmployee(request);
     }
 
     @GetMapping("/{id}")
-    public Employee getEmployeeById(@PathVariable Long id) {
+    public EmployeeResponse getEmployeeById(
+            @PathVariable Long id){
 
         return employeeService.getEmployeeById(id);
     }

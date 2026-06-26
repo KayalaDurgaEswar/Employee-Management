@@ -1,9 +1,11 @@
 package com.practice.employee_management.service;
 
+import com.practice.employee_management.dto.EmployeeRequest;
+import com.practice.employee_management.dto.EmployeeResponse;
 import com.practice.employee_management.entity.Employee;
 
 public interface EmployeeService {
-    Employee createEmployee(Employee employee);
+    EmployeeResponse createEmployee(EmployeeRequest request);
 
-    Employee getEmployeeById(Long id);
+    EmployeeResponse getEmployeeById(Long id);
 }
