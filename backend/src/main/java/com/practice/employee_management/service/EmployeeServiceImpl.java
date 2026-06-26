@@ -10,6 +10,8 @@ import com.practice.employee_management.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
@@ -71,5 +73,14 @@ public class EmployeeServiceImpl implements EmployeeService {
                                 "Employee not found with id: " + id));
 
         employeeRepository.delete(employee);
+    }
+    @Override
+    public List<EmployeeResponse> getAllEmployees() {
+
+        List<Employee> employees = employeeRepository.findAll();
+
+        return employees.stream()
+                .map(EmployeeMapper::toResponse)
+                .toList();
     }
 }

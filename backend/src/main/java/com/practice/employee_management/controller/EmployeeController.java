@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/employees")
 @RequiredArgsConstructor
@@ -48,6 +50,12 @@ public class EmployeeController {
     public void deleteEmployee(@PathVariable Long id) {
 
         employeeService.deleteEmployee(id);
+
+    }
+    @GetMapping
+    public List<EmployeeResponse> getAllEmployees() {
+
+        return employeeService.getAllEmployees();
 
     }
 
