@@ -26,7 +26,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = EmployeeMapper.toEntity(request);
 
         Employee savedEmployee = employeeRepository.save(employee);
-
+        log.info("Creating employee with code {}", request.getEmployeeCode());
         return EmployeeMapper.toResponse(savedEmployee);
     }
 
@@ -37,7 +37,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
                                 "Employee not found with id : " + id));
-
+        log.info("Fetching employee with id {}", id);
         return EmployeeMapper.toResponse(employee);
 
 
@@ -61,7 +61,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
         Employee updated_employee = employeeRepository.save(employee);
-
+        log.info("Updating employee with id {}", id);
 
         return EmployeeMapper.toResponse(updated_employee);
 
@@ -73,7 +73,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
                                 "Employee not found with id: " + id));
-
+        log.info("Deleting Employee by Id{}",id);
         employeeRepository.delete(employee);
     }
     @Override
