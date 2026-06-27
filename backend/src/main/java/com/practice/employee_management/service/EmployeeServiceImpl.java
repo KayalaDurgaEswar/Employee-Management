@@ -8,10 +8,12 @@ import com.practice.employee_management.mapper.EmployeeMapper;
 import com.practice.employee_management.repository.EmployeeRepository;
 import com.practice.employee_management.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
@@ -80,6 +82,24 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<Employee> employees = employeeRepository.findAll();
 
         return employees.stream()
+                .map(EmployeeMapper::toResponse)
+                .toList();
+    }
+    @Override
+    public List<EmployeeResponse> searchEmployees(String name) {
+
+        return employeeRepository
+                .findByFirstNameContainingIgnoreCase(name)
+                .stream()
+                .map(EmployeeMapper::toResponse)
+                .toList();
+    }
+    @Override
+    public List<EmployeeResponse> getEmployeesByDepartment(String department) {
+
+        return employeeRepository
+                .findByDepartment(department)
+                .stream()
                 .map(EmployeeMapper::toResponse)
                 .toList();
     }

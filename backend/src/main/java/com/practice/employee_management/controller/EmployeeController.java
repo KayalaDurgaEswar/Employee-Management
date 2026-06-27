@@ -58,5 +58,17 @@ public class EmployeeController {
         return employeeService.getAllEmployees();
 
     }
+    @GetMapping("/search")
+    public List<EmployeeResponse> searchEmployees(
+            @RequestParam String name){
+
+        return employeeService.searchEmployees(name);
+    }
+    @GetMapping(params = "department")
+    public List<EmployeeResponse> getEmployeesByDepartment(
+            @RequestParam String department){
+
+        return employeeService.getEmployeesByDepartment(department);
+    }
 
 }
