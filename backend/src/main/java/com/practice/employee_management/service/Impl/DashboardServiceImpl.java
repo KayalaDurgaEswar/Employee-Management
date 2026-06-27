@@ -1,8 +1,9 @@
-package com.practice.employee_management.service;
+package com.practice.employee_management.service.Impl;
 
 import com.practice.employee_management.dto.DashboardResponse;
 import com.practice.employee_management.entity.EmployeeStatus;
 import com.practice.employee_management.repository.EmployeeRepository;
+import com.practice.employee_management.service.DashboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

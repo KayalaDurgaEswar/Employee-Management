@@ -1,4 +1,4 @@
-package com.practice.employee_management.service;
+package com.practice.employee_management.service.Impl;
 
 import com.practice.employee_management.dto.EmployeeRequest;
 import com.practice.employee_management.dto.EmployeeResponse;
@@ -9,6 +9,9 @@ import com.practice.employee_management.repository.EmployeeRepository;
 import com.practice.employee_management.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -103,4 +106,15 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .map(EmployeeMapper::toResponse)
                 .toList();
     }
+    public Page<EmployeeResponse> getEmployees(int page, int size) {
+
+        log.info("Fetching employees page {} with size {}", page, size);
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        return employeeRepository
+                .findAll(pageable)
+                .map(EmployeeMapper::toResponse);
+    }
+
 }
