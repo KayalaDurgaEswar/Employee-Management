@@ -14,4 +14,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     long countByStatus(EmployeeStatus status);
     @Query("SELECT COUNT(DISTINCT e.department) FROM Employee e")
     long countDistinctDepartments();
+    boolean existsByEmail(String email);
+
+    boolean existsByEmployeeCode(String employeeCode);
 }

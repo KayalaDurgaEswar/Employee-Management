@@ -3,6 +3,8 @@ package com.practice.employee_management.service.Impl;
 import com.practice.employee_management.dto.EmployeeRequest;
 import com.practice.employee_management.dto.EmployeeResponse;
 import com.practice.employee_management.entity.Employee;
+import com.practice.employee_management.entity.EmployeeStatus;
+import com.practice.employee_management.exception.DuplicateResourceException;
 import com.practice.employee_management.exception.ResourceNotFoundException;
 import com.practice.employee_management.mapper.EmployeeMapper;
 import com.practice.employee_management.repository.EmployeeRepository;
@@ -25,7 +27,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponse createEmployee(EmployeeRequest request) {
+        if(employeeRepository.existsByEmail(request.getEmail())){
 
+            throw new DuplicateResourceException(
+                    "Email already exists.");
+
+        }
+        if(employeeRepository.existsByEmployeeCode(request.getEmployeeCode())){
+
+            throw new DuplicateResourceException(
+                    "Employee Code already exists.");
+
+        }
         Employee employee = EmployeeMapper.toEntity(request);
 
         Employee savedEmployee = employeeRepository.save(employee);
