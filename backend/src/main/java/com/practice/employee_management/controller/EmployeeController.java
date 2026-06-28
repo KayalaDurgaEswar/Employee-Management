@@ -1,17 +1,15 @@
 package com.practice.employee_management.controller;
 
-
+import com.practice.employee_management.shared.ApiResponse;
 import com.practice.employee_management.dto.EmployeeRequest;
 import com.practice.employee_management.dto.EmployeeResponse;
-import com.practice.employee_management.entity.Employee;
-import com.practice.employee_management.exception.ResourceNotFoundException;
-import com.practice.employee_management.repository.EmployeeRepository;
+import com.practice.employee_management.entity.EmployeeStatus;
 import com.practice.employee_management.service.EmployeeService;
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,65 +20,144 @@ import java.util.List;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
-    @Operation(summary = "Create a new Employee")
+
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public EmployeeResponse createEmployee(
-            @Valid
-            @RequestBody EmployeeRequest request){
+    public ResponseEntity<ApiResponse<EmployeeResponse>> createEmployee(
+            @Valid @RequestBody EmployeeRequest request) {
 
-        return employeeService.createEmployee(request);
+        EmployeeResponse response = employeeService.createEmployee(request);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(
+                        ApiResponse.<EmployeeResponse>builder()
+                                .success(true)
+                                .message("Employee created successfully")
+                                .data(response)
+                                .build()
+                );
     }
-    @Operation(summary = "Get Employee")
+
     @GetMapping("/{id}")
-    public EmployeeResponse getEmployeeById(
-            @PathVariable Long id){
+    public ResponseEntity<ApiResponse<EmployeeResponse>> getEmployeeById(
+            @PathVariable Long id) {
 
-        return employeeService.getEmployeeById(id);
+        EmployeeResponse response = employeeService.getEmployeeById(id);
+
+        return ResponseEntity.ok(
+                ApiResponse.<EmployeeResponse>builder()
+                        .success(true)
+                        .message("Employee fetched successfully")
+                        .data(response)
+                        .build()
+        );
     }
-    @Operation(summary = "Update Employee")
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<EmployeeResponse>>> getAllEmployees() {
+
+        List<EmployeeResponse> response = employeeService.getAllEmployees();
+
+        return ResponseEntity.ok(
+                ApiResponse.<List<EmployeeResponse>>builder()
+                        .success(true)
+                        .message("Employees fetched successfully")
+                        .data(response)
+                        .build()
+        );
+    }
+
     @PutMapping("/{id}")
-    public EmployeeResponse updateEmployee(
+    public ResponseEntity<ApiResponse<EmployeeResponse>> updateEmployee(
             @PathVariable Long id,
-            @Valid @RequestBody EmployeeRequest request
-    ){
-        return employeeService.updateEmployee(id,request);
+            @Valid @RequestBody EmployeeRequest request) {
+
+        EmployeeResponse response = employeeService.updateEmployee(id, request);
+
+        return ResponseEntity.ok(
+                ApiResponse.<EmployeeResponse>builder()
+                        .success(true)
+                        .message("Employee updated successfully")
+                        .data(response)
+                        .build()
+        );
     }
-    @Operation(summary = "Delete Employee")
+
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteEmployee(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteEmployee(
+            @PathVariable Long id) {
 
         employeeService.deleteEmployee(id);
 
+        return ResponseEntity.ok(
+                ApiResponse.<Void>builder()
+                        .success(true)
+                        .message("Employee deleted successfully")
+                        .data(null)
+                        .build()
+        );
     }
-    @Operation(summary = "Get All Employee")
-    @GetMapping
-    public List<EmployeeResponse> getAllEmployees() {
 
-        return employeeService.getAllEmployees();
-
-    }
-    @Operation(summary = "Search Employee")
     @GetMapping("/search")
-    public List<EmployeeResponse> searchEmployees(
-            @RequestParam String name){
+    public ResponseEntity<ApiResponse<List<EmployeeResponse>>> searchEmployees(
+            @RequestParam String name) {
 
-        return employeeService.searchEmployees(name);
+        List<EmployeeResponse> response = employeeService.searchEmployees(name);
+
+        return ResponseEntity.ok(
+                ApiResponse.<List<EmployeeResponse>>builder()
+                        .success(true)
+                        .message("Employees fetched successfully")
+                        .data(response)
+                        .build()
+        );
     }
-    @Operation(summary = "filter by Dept")
+
     @GetMapping(params = "department")
-    public List<EmployeeResponse> getEmployeesByDepartment(
-            @RequestParam String department){
+    public ResponseEntity<ApiResponse<List<EmployeeResponse>>> getEmployeesByDepartment(
+            @RequestParam String department) {
 
-        return employeeService.getEmployeesByDepartment(department);
+        List<EmployeeResponse> response =
+                employeeService.getEmployeesByDepartment(department);
+
+        return ResponseEntity.ok(
+                ApiResponse.<List<EmployeeResponse>>builder()
+                        .success(true)
+                        .message("Employees fetched successfully")
+                        .data(response)
+                        .build()
+        );
     }
+
+    @GetMapping(params = "status")
+    public ResponseEntity<ApiResponse<List<EmployeeResponse>>> getEmployeesByStatus(
+            @RequestParam EmployeeStatus status) {
+
+        List<EmployeeResponse> response =
+                employeeService.getEmployeesByStatus(status);
+
+        return ResponseEntity.ok(
+                ApiResponse.<List<EmployeeResponse>>builder()
+                        .success(true)
+                        .message("Employees fetched successfully")
+                        .data(response)
+                        .build()
+        );
+    }
+
     @GetMapping("/page")
-    public Page<EmployeeResponse> getEmployees(
+    public ResponseEntity<ApiResponse<Page<EmployeeResponse>>> getEmployeesWithPagination(
             @RequestParam int page,
-            @RequestParam int size){
+            @RequestParam int size) {
 
-        return employeeService.getEmployees(page,size);
+        Page<EmployeeResponse> response =
+                employeeService.getEmployees(page, size);
+
+        return ResponseEntity.ok(
+                ApiResponse.<Page<EmployeeResponse>>builder()
+                        .success(true)
+                        .message("Employees fetched successfully")
+                        .data(response)
+                        .build()
+        );
     }
-
 }

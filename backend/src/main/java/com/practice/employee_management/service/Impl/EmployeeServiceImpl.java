@@ -116,5 +116,15 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .findAll(pageable)
                 .map(EmployeeMapper::toResponse);
     }
+    @Override
+    public List<EmployeeResponse> getEmployeesByStatus(EmployeeStatus status) {
+
+        log.info("Fetching employees with status {}", status);
+
+        return employeeRepository.findByStatus(status)
+                .stream()
+                .map(EmployeeMapper::toResponse)
+                .toList();
+    }
 
 }
